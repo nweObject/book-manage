@@ -38,8 +38,8 @@ public class BookServieImpl implements BookService {
     @Override
     public void addNewBook(BookInfo bookInfo) {
         Date date = new Date();
-        DateFormat dft = new SimpleDateFormat("yyyy-MM-dd E a HH:mm:ss");
-        String format = dft.format(date);
+//        DateFormat dft = new SimpleDateFormat("yyyy-MM-dd E a HH:mm:ss");
+//        String format = dft.format(date);
         bookInfo.setCreateTime(date);
         bookInfoMapper.insert(bookInfo);
     }
