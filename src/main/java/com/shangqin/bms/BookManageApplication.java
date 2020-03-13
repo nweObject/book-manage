@@ -2,6 +2,7 @@ package com.shangqin.bms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @description：TODO
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version：
  * @Copyright：重庆商勤科技有限公司
  */
+@MapperScan("com.shangqin.bms.mapper")
 @SpringBootApplication
 public class BookManageApplication {
     public static void main(String[] args) {
