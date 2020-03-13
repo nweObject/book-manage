@@ -16,4 +16,10 @@ import java.util.List;
  */
 public interface BookService {
     List<BookInfo> selectAllBooks();
+
+    void addNewBook(BookInfo bookInfo);
+
+    BookInfo getBookById(Integer bookId);
+
+    List<BookInfo> selectBooksByKeyWords(String keywords);
 }
