@@ -4,6 +4,7 @@ import com.shangqin.bms.mapper.UserInfoMapper;
 import com.shangqin.bms.pojo.UserInfo;
 import com.shangqin.bms.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @version：
  * @Copyright：重庆商勤科技有限公司
  */
+@Service
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     UserInfoMapper userInfoMapper;

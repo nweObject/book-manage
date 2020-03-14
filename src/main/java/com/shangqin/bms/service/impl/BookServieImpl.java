@@ -3,8 +3,10 @@ package com.shangqin.bms.service.impl;
 import com.shangqin.bms.mapper.BookInfoMapper;
 import com.shangqin.bms.pojo.BookInfo;
 import com.shangqin.bms.service.BookService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -59,6 +61,9 @@ public class BookServieImpl implements BookService {
      * */
     @Override
     public List<BookInfo> selectBooksByKeyWords(String keyword) {
+//        Example example = new Example(BookInfo.class);
+//        example.createCriteria().andLike("bookName",keyword);
+//        return bookInfoMapper.selectByExample(example);
         return bookInfoMapper.selectBookInfo(keyword);
     }
 

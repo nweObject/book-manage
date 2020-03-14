@@ -27,12 +27,12 @@ import java.util.List;
 public class BookInfo {
     @Id
     @GeneratedValue(generator = "JDBC")
-    private int id;
+    private Integer id;
     private String bookName;
     private String description;
-    private int price;
+    private Integer price;
     private String bookImg;
     private Date createTime;
-    private int status;
+    private Integer status;
     List<BorrowerInfo> borrowerInfos;
 }

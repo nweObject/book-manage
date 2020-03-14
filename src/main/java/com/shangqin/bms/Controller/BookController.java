@@ -33,8 +33,8 @@ public class BookController {
         return bookInfos;
     }
     //管理员添加图书
-    @PutMapping("add")
-    public String putBook(@RequestBody BookInfo bookInfo) {
+    @PostMapping("add")
+    public String addBook(@RequestBody BookInfo bookInfo) {
         try {
             bookService.addNewBook(bookInfo);
         } catch (Exception e) {
@@ -43,8 +43,8 @@ public class BookController {
         return "ok";
     }
     //管理员查看书籍的借阅记录
-    @GetMapping("{bookId}")
-    public BookInfo getBookInfoById(@PathParam("bookId") Integer bookId) {
+    @GetMapping("info")
+    public BookInfo getBookInfoById(@RequestParam("bookId") Integer bookId) {
         BookInfo bookInfo = bookService.getBookById(bookId);
         List<BorrowerInfo> borrowerInfos = borrowerInfoService.selectBorrowerByBookId(bookId);
         bookInfo.setBorrowerInfos(borrowerInfos);

@@ -26,13 +26,13 @@ import java.util.Date;
 public class UserBookInfo {
     @Id
     @GeneratedValue(generator = "JDBC")
-    private int id;
-    private int userId;
-    private int bookId;
+    private Integer id;
+    private Integer userId;
+    private Integer bookId;
     private String bookName;
     private String bookImg;
     private Date createTime;
-    private Date returnTime;
-    private int status;
-    private int renewzCount; //延期不能超过两次
+    private String returnTime;
+    private Integer status;
+    private Integer renewzCount; //延期不能超过两次
 }

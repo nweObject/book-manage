@@ -22,9 +22,10 @@ import javax.persistence.Table;
 @Table(name = "borrower_info")
 public class BorrowerInfo {
 
-    private int id;
-    private int userId;
-    private int bookId;
+    private Integer id;
+    private Integer userId;
+    private Integer bookId;
     private String username;
-    private int age;
+    private Integer age;
+    private String returnTime;
 }

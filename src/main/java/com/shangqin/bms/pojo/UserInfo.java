@@ -30,8 +30,8 @@ public class UserInfo {
 //	`age` int(4) DEFAULT NULL ,
     @Id
     @GeneratedValue(generator = "JDBC")
-    private int id;
+    private Integer id;
     private String phoneNum;
     private String username;
-    private int age;
+    private Integer age;
 }

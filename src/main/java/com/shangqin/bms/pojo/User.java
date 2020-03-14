@@ -27,11 +27,11 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(generator = "JDBC")
-    private int id;
+    private Integer id;
     private String username;
     private String phoneNum;
     private String psw;
-    private int age;
-    private int identify;
+    private Integer age;
+    private Integer identify;
     List<UserBookInfo> UserBookInfos;
 }
