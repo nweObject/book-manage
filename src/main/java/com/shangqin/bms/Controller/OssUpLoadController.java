@@ -10,8 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author zy
- * @creat 2019-12-{DAY}-{TIME}
+ * @description：TODO
+ * @projectName：book-manage
+ * @packageName：com.shangqin.bms.service.impl
+ * @className：BookServieImpl
+ * @createAuthor：zhouyang
+ * @createTime：2020/3/13 17:02
+ * @version：
+ * @Copyright：重庆商勤科技有限公司
  */
 @RestController
 @CrossOrigin

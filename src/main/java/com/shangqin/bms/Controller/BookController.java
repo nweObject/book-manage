@@ -42,7 +42,9 @@ public class BookController {
         }
         return "ok";
     }
-    //管理员查看书籍的借阅记录
+    /**
+     * 管理员查看书籍的借阅记录
+     */
     @GetMapping("info")
     public BookInfo getBookInfoById(@RequestParam("bookId") Integer bookId) {
         BookInfo bookInfo = bookService.getBookById(bookId);
