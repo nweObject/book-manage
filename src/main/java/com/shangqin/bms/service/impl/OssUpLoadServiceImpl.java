@@ -47,7 +47,7 @@ public class OssUpLoadServiceImpl implements OssUpLoadService {
             }
         }
         if(!flag) {
-            throw new RuntimeException("格式不正确");
+            System.out.println("图片格式不正确");;
         }
         try {
             //验证图片内容是否合法

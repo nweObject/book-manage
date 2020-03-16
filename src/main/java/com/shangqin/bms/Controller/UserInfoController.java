@@ -2,6 +2,7 @@ package com.shangqin.bms.Controller;
 
 import com.shangqin.bms.pojo.UserInfo;
 import com.shangqin.bms.service.UserInfoService;
+import com.shangqin.bms.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +28,8 @@ public class UserInfoController {
     UserInfoService userInfoService;
     //管理员查看用户信息接口
     @GetMapping("userInfo")
-    public List<UserInfo> getAllUserInfo() {
+    public Response getAllUserInfo() {
         List<UserInfo> userInfos = userInfoService.getAllUserInfo();
-        return userInfos;
+        return Response.newOkInstance(userInfos);
     }
 }
