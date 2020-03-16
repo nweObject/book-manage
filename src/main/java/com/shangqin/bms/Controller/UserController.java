@@ -4,7 +4,8 @@ import com.shangqin.bms.pojo.User;
 import com.shangqin.bms.service.UserService;
 import com.shangqin.bms.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,17 +25,17 @@ import java.util.Map;
  * @version：
  * @Copyright：重庆商勤科技有限公司
  */
+@CrossOrigin
 @RestController
 public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public Response login(@RequestParam("phoneNum") String phoneNum, @RequestParam("password") String password, HttpServletRequest request) {
         HttpSession session = request.getSession();
         List<User> users = userService.toLogin(phoneNum, password);
         if(users.size() != 0 && null != users.get(0)) {
-
             Integer userId = users.get(0).getId();
             String username = users.get(0).getUsername();
             Integer identify = users.get(0).getIdentify();
