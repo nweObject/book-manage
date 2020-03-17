@@ -1,4 +1,4 @@
-package com.shangqin.bms.Controller;
+package com.shangqin.bms.controller;
 
 import com.shangqin.bms.pojo.BookInfo;
 import com.shangqin.bms.pojo.BorrowerInfo;
