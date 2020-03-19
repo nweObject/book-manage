@@ -1,6 +1,7 @@
 package com.shangqin.bms.mapper;
 
 import com.shangqin.bms.pojo.BookInfo;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -16,5 +17,5 @@ import java.util.List;
  * @Copyright：重庆商勤科技有限公司
  */
 public interface BookInfoMapper extends Mapper<BookInfo> {
-    List<BookInfo> selectBookInfo(String keyword);
+    List<BookInfo> selectBookInfo(@Param("keywords") String keywords);
 }

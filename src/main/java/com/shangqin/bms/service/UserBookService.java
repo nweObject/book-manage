@@ -23,4 +23,8 @@ public interface UserBookService {
     String updateReturnBookTime(Integer userBookId, Integer bookId, Integer userId);
 
     List<UserBookInfo> selectUserBookDetailsByUserId(Integer userId);
+
+    String recorderBookInfo(Integer userBookId, Integer bookId, Integer userId);
+
+    void updateUserBookInfo(Integer userBookId);
 }

@@ -76,3 +76,16 @@ CREATE TABLE `borrower_info` (
 	`return_time` date DEFAULT null,
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+##遗失书籍记录
+CREATE TABLE `lost_recorder` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`usr_id` int(11) DEFAULT NULL,
+	`user_name` VARCHAR(11) DEFAULT NULL,
+	`book_name` VARCHAR(11) DEFAULT NULL,
+	`description` VARCHAR(255) DEFAULT NULL,
+	`price` int(4) DEFAULT NULL,
+	`recorder_time` date DEFAULT NULL comment '添加书籍日期',
+	`status` int(2) DEFAULT NULL COMMENT '书籍状态：0-管理员未确认，1-管理员确认',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -60,11 +60,11 @@ public class BookServieImpl implements BookService {
      * 关键词查询书籍信息
      * */
     @Override
-    public List<BookInfo> selectBooksByKeyWords(String keyword) {
+    public List<BookInfo> selectBooksByKeyWords(String keywords) {
 //        Example example = new Example(BookInfo.class);
 //        example.createCriteria().andLike("bookName",keyword);
 //        return bookInfoMapper.selectByExample(example);
-        return bookInfoMapper.selectBookInfo(keyword);
+        return bookInfoMapper.selectBookInfo(keywords);
     }
 
 }

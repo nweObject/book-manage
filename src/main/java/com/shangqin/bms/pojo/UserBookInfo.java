@@ -35,4 +35,5 @@ public class UserBookInfo {
     private String returnTime;
     private Integer status;
     private Integer renewzCount; //延期不能超过两次
+    private Integer status2;
 }
