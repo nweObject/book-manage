@@ -43,6 +43,7 @@ public class BookServieImpl implements BookService {
 //        DateFormat dft = new SimpleDateFormat("yyyy-MM-dd E a HH:mm:ss");
 //        String format = dft.format(date);
         bookInfo.setCreateTime(date);
+        bookInfo.setStatus(0);
         bookInfoMapper.insert(bookInfo);
     }
     /**

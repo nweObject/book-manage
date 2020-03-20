@@ -30,6 +30,7 @@ public class OssUpLoadController {
         String url = ossUpLoadService.uploadFile(file);
         Map<String, String> urlMap = new HashMap<>();
         urlMap.put("url", url);
+        System.out.println(url);
         return Response.newOkInstance(urlMap);
     }
 }

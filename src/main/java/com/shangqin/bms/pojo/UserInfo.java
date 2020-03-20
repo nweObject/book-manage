@@ -31,7 +31,9 @@ public class UserInfo {
     @Id
     @GeneratedValue(generator = "JDBC")
     private Integer id;
+    private Integer userId;
     private String phoneNum;
     private String username;
     private Integer age;
+    private Integer identify;
 }

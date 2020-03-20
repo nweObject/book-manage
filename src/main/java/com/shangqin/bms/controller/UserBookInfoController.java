@@ -1,7 +1,9 @@
 package com.shangqin.bms.controller;
 
+import com.shangqin.bms.pojo.LostRecorder;
 import com.shangqin.bms.pojo.UserBookInfo;
 import com.shangqin.bms.pojo.vo.Recorder;
+import com.shangqin.bms.pojo.vo.Review;
 import com.shangqin.bms.pojo.vo.UpdateUserBook;
 import com.shangqin.bms.service.UserBookService;
 import com.shangqin.bms.utils.Response;
@@ -76,7 +78,8 @@ public class UserBookInfoController {
      * */
     @GetMapping("/detail")
     public Response getDetailsByUserId(HttpServletRequest request) {
-        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        Map userMap = (HashMap)request.getSession().getAttribute("userMap");
+        Integer userId = (Integer) userMap.get("userId");
         List<UserBookInfo> userBookInfoList = userBookService.selectUserBookDetailsByUserId(userId);
         return Response.newOkInstance(userBookInfoList);
     }
@@ -89,12 +92,32 @@ public class UserBookInfoController {
         userBookService.updateUserBookInfo(userBookId);
         return Response.newOkInstance("ok");
     }
+    /**
+     * 赔偿
+     * */
     @PostMapping("compensation")
     public Response compensationBook(@RequestBody Recorder recorder) {
         Integer bookId = recorder.getBookId();
         Integer userBookId = recorder.getUserBookId();
         Integer userId = recorder.getUserId();
         String result = userBookService.recorderBookInfo(userBookId, bookId, userId);
+        return Response.newOkInstance("ok");
+    }
+    /**
+     * 查询所有遗失记录
+     * */
+    @GetMapping("lostBooks")
+    public Response getLostReview() {
+        List<LostRecorder> lostRecorders = userBookService.selectLostRecorder();
+        return Response.newOkInstance(lostRecorders);
+    }
+    /**
+     * 管理员审核已经赔偿过得书籍
+     * */
+    @PutMapping("/review")
+    public Response reviewBook(@RequestBody Review review) {
+        Integer lostBookId = review.getLostBookId();
+        userBookService.reviewLostBookById(lostBookId);
         return Response.newOkInstance("ok");
     }
 }

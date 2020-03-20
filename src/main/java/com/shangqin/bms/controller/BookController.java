@@ -62,5 +62,4 @@ public class BookController {
         List<BookInfo> bookInfos = bookService.selectBooksByKeyWords(keywords);
         return Response.newOkInstance(bookInfos);
     }
-
 }

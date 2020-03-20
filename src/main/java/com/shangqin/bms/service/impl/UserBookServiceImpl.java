@@ -65,6 +65,7 @@ public class UserBookServiceImpl implements UserBookService {
         userBookInfo.setBookName(bookInfo1.getBookName());
         userBookInfo.setStatus(0);
         userBookInfo.setReturnTime(plusDay(13));
+        userBookInfo.setStatus2(0);
         int userBookId = userBookMapper.insertSelective(userBookInfo);
 
         //修改图书馆被借用书籍的状态
@@ -159,6 +160,25 @@ public class UserBookServiceImpl implements UserBookService {
         userBookInfo.setId(userBookId);
         userBookInfo.setStatus(2);
         userBookMapper.updateByPrimaryKeySelective(userBookInfo);
+    }
+
+    @Override
+    public List<LostRecorder> selectLostRecorder() {
+        List<LostRecorder> lostRecorders = lostBookInfoMapper.selectAll();
+        return lostRecorders;
+    }
+
+    @Override
+    public void reviewLostBookById(Integer lostBookId) {
+//        LostRecorder lostRecorder = new LostRecorder();
+//        lostRecorder.setId(lostBookId);
+//        lostRecorder.setStatus(1);
+        Example example = new Example(LostRecorder.class);
+        example.createCriteria().andEqualTo("id", lostBookId);
+        LostRecorder lostRecorder = new LostRecorder();
+        lostRecorder.setStatus(1);
+        lostBookInfoMapper.updateByExampleSelective(lostRecorder,example);
+//        int i = lostBookInfoMapper.updateByPrimaryKeySelective(lostRecorder);
     }
 
 

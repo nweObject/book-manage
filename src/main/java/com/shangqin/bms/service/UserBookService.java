@@ -1,5 +1,6 @@
 package com.shangqin.bms.service;
 
+import com.shangqin.bms.pojo.LostRecorder;
 import com.shangqin.bms.pojo.UserBookInfo;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface UserBookService {
     String recorderBookInfo(Integer userBookId, Integer bookId, Integer userId);
 
     void updateUserBookInfo(Integer userBookId);
+
+    List<LostRecorder> selectLostRecorder();
+
+    void reviewLostBookById(Integer lostBookId);
 }
