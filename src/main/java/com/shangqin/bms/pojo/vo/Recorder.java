@@ -19,6 +19,6 @@ import lombok.Setter;
 @Setter
 public class Recorder {
     private Integer userBookId;
-    private Integer BookId;
+    private Integer bookId;
     private Integer userId;
 }

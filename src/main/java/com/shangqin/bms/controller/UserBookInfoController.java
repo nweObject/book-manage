@@ -7,6 +7,7 @@ import com.shangqin.bms.pojo.vo.Review;
 import com.shangqin.bms.pojo.vo.UpdateUserBook;
 import com.shangqin.bms.service.UserBookService;
 import com.shangqin.bms.utils.Response;
+import com.shangqin.bms.utils.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,7 @@ public class UserBookInfoController {
         Map userMap = (HashMap)session.getAttribute("userMap");
 
         try {
-            userBookService.addUserBook(bookId,userMap);
+            userBookService.addUserBook(bookId, userMap);
         } catch (Exception e) {
             return Response.newErrorInstance("该书籍已被借出");
         }
@@ -63,10 +64,10 @@ public class UserBookInfoController {
     public Response updateReturnBookTime(@RequestBody UpdateUserBook updateUserBook, HttpServletRequest request) {
         Integer userBookId = updateUserBook.getUserbookId();
         Integer bookId = updateUserBook.getBookId();
-        Map userMap = (HashMap)request.getSession().getAttribute("userMap");
-        Integer userId = (Integer) userMap.get("userId");
+        //工具类获取userId
+        Integer userId = SessionUtil.getUserId(request);
         String result = userBookService.updateReturnBookTime(userBookId, bookId, userId);
-        if(result.equals("ok")) {
+        if("ok".equals(result)) {
 
             return Response.newOkInstance("延期成功");
         }
@@ -78,8 +79,8 @@ public class UserBookInfoController {
      * */
     @GetMapping("/detail")
     public Response getDetailsByUserId(HttpServletRequest request) {
-        Map userMap = (HashMap)request.getSession().getAttribute("userMap");
-        Integer userId = (Integer) userMap.get("userId");
+        //工具类获取userId
+        Integer userId = SessionUtil.getUserId(request);
         List<UserBookInfo> userBookInfoList = userBookService.selectUserBookDetailsByUserId(userId);
         return Response.newOkInstance(userBookInfoList);
     }

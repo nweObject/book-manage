@@ -3,10 +3,12 @@ package com.shangqin.bms.service.impl;
 import com.shangqin.bms.mapper.*;
 import com.shangqin.bms.pojo.*;
 import com.shangqin.bms.service.UserBookService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,9 +47,9 @@ public class UserBookServiceImpl implements UserBookService {
     @Override
     public void addUserBook(Integer bookId, Map userMap) {
         //查询书籍状态，如果被借出则不能再借
-        BookInfo _thisBookInfo = bookInfoMapper.selectByPrimaryKey(bookId);
-        if(_thisBookInfo.getStatus() == 1) {
-            throw new RuntimeException();
+        BookInfo thisBookInfo = bookInfoMapper.selectByPrimaryKey(bookId);
+        if(thisBookInfo.getStatus() == 1) {
+            throw new RuntimeException("该书籍已经被借出");
         }
         Integer userId = (Integer)userMap.get("userId");
         String username = (String) userMap.get("username");
@@ -66,8 +68,7 @@ public class UserBookServiceImpl implements UserBookService {
         userBookInfo.setStatus(0);
         userBookInfo.setReturnTime(plusDay(13));
         userBookInfo.setStatus2(0);
-        int userBookId = userBookMapper.insertSelective(userBookInfo);
-
+        userBookMapper.insertSelective(userBookInfo);
         //修改图书馆被借用书籍的状态
         bookInfo1.setStatus(1);
         bookInfoMapper.updateByPrimaryKey(bookInfo1);
@@ -105,9 +106,14 @@ public class UserBookServiceImpl implements UserBookService {
         if(userBookInfo1.getRenewzCount() <=1) {
             userBookInfo1.setRenewzCount(userBookInfo1.getRenewzCount()+1);
             userBookInfo1.setStatus(1);
-            userBookInfo1.setReturnTime(plusDay(13));
+            try {
+                userBookInfo1.setReturnTime(plusATime(userBookInfo1.getReturnTime(),13));
+            } catch (ParseException e) {
+                return "" + e.getMessage();
+            }
             userBookMapper.updateByPrimaryKeySelective(userBookInfo1);
         }else {
+            //如果已经延期了两次则不能再延期
             return "erro";
         }
         //修改借阅人归还书籍时间
@@ -170,15 +176,11 @@ public class UserBookServiceImpl implements UserBookService {
 
     @Override
     public void reviewLostBookById(Integer lostBookId) {
-//        LostRecorder lostRecorder = new LostRecorder();
-//        lostRecorder.setId(lostBookId);
-//        lostRecorder.setStatus(1);
         Example example = new Example(LostRecorder.class);
         example.createCriteria().andEqualTo("id", lostBookId);
         LostRecorder lostRecorder = new LostRecorder();
         lostRecorder.setStatus(1);
         lostBookInfoMapper.updateByExampleSelective(lostRecorder,example);
-//        int i = lostBookInfoMapper.updateByPrimaryKeySelective(lostRecorder);
     }
 
 
@@ -198,4 +200,21 @@ public class UserBookServiceImpl implements UserBookService {
         System.out.println("增加天数以后的日期：" + enddate);
         return enddate;
     }
+    /**
+     * 给某个时间加上一个指定的时间
+     * */
+    public String plusATime(String data, int day) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = simpleDateFormat.parse(data);
+        Date date = addDate(parse, day);
+        String format = simpleDateFormat.format(date);
+        return format;
+    }
+    public Date addDate(Date date, int day) {
+        long time = date.getTime();
+        day = day*24*60*60*1000;
+        time += day;
+        return new Date(time);
+    }
+
 }

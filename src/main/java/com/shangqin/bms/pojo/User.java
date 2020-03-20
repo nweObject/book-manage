@@ -33,5 +33,5 @@ public class User {
     private String psw;
     private Integer age;
     private Integer identify;
-    List<UserBookInfo> UserBookInfos;
+    List<UserBookInfo> userBookInfos;
 }

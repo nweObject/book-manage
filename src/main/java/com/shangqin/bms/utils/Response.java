@@ -13,11 +13,10 @@ package com.shangqin.bms.utils;
 public class Response {
     private final static String STATUS_OK = "0";
     private final static String STATUS_ERROR = "1";
-
-    private String status;     // 状态
-    private Object data;   // 返回值
-    private Exception e;   // 异常类捕获
-    private String msg;    // 自定义信息
+    private String status;
+    private Object data;
+    private Exception e;
+    private String msg;
 
     public String getStatus() {
         return status;

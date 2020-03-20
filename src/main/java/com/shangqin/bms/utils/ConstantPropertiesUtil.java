@@ -27,7 +27,6 @@ public class ConstantPropertiesUtil implements InitializingBean {
     public static String BUCKET_NAME;
     public static String FILE_HOST ;
 
-//InitializingBean接口为bean提供了初始化方法的方式，它只包括afterPropertiesSet方法，
     @Override
     public void afterPropertiesSet() throws Exception {
         this.END_POINT = endpoint;

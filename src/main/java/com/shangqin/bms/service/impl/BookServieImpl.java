@@ -40,8 +40,6 @@ public class BookServieImpl implements BookService {
     @Override
     public void addNewBook(BookInfo bookInfo) {
         Date date = new Date();
-//        DateFormat dft = new SimpleDateFormat("yyyy-MM-dd E a HH:mm:ss");
-//        String format = dft.format(date);
         bookInfo.setCreateTime(date);
         bookInfo.setStatus(0);
         bookInfoMapper.insert(bookInfo);
@@ -62,9 +60,6 @@ public class BookServieImpl implements BookService {
      * */
     @Override
     public List<BookInfo> selectBooksByKeyWords(String keywords) {
-//        Example example = new Example(BookInfo.class);
-//        example.createCriteria().andLike("bookName",keyword);
-//        return bookInfoMapper.selectByExample(example);
         return bookInfoMapper.selectBookInfo(keywords);
     }
 
