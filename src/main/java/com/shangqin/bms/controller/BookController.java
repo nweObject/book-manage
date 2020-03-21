@@ -62,4 +62,12 @@ public class BookController {
         List<BookInfo> bookInfos = bookService.selectBooksByKeyWords(keywords);
         return Response.newOkInstance(bookInfos);
     }
+    /**
+     * 下架书籍
+     * */
+    @DeleteMapping("delete")
+    public Response deleteBook(@RequestParam("bookId") Integer bookId, @RequestParam("lostBookId") Integer lostBookId) {
+        bookService.deleteBookById(bookId, lostBookId);
+        return Response.newOkInstance("ok");
+    }
 }

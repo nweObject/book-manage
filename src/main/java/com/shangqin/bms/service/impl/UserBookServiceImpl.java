@@ -3,7 +3,6 @@ package com.shangqin.bms.service.impl;
 import com.shangqin.bms.mapper.*;
 import com.shangqin.bms.pojo.*;
 import com.shangqin.bms.service.UserBookService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -37,7 +36,7 @@ public class UserBookServiceImpl implements UserBookService {
     BorrowerInfoMapper borrowerInfoMapper;
 
     @Autowired
-    LostBookInfoMapper lostBookInfoMapper;
+    LostRecorderMapper lostBookInfoMapper;
 
     @Autowired
     UserMapper userMapper;
@@ -150,6 +149,7 @@ public class UserBookServiceImpl implements UserBookService {
         String format = simpleDateFormat.format(date);
         lostBookInfo.setRecorderTime(format);
         lostBookInfo.setUserId(userId);
+        lostBookInfo.setBookId(bookId);
         lostBookInfo.setUserName(user1.getUsername());
         int insert = lostBookInfoMapper.insert(lostBookInfo);
         //修改UserBookInfo的赔偿状态

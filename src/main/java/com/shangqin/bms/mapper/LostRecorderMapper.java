@@ -13,5 +13,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @version：
  * @Copyright：重庆商勤科技有限公司
  */
-public interface LostBookInfoMapper extends Mapper<LostRecorder> {
+public interface LostRecorderMapper extends Mapper<LostRecorder> {
 }

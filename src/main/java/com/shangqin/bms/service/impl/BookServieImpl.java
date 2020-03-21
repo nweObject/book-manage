@@ -1,15 +1,14 @@
 package com.shangqin.bms.service.impl;
 
 import com.shangqin.bms.mapper.BookInfoMapper;
+import com.shangqin.bms.mapper.LostRecorderMapper;
 import com.shangqin.bms.pojo.BookInfo;
+import com.shangqin.bms.pojo.LostRecorder;
 import com.shangqin.bms.service.BookService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +26,8 @@ import java.util.List;
 public class BookServieImpl implements BookService {
     @Autowired
     BookInfoMapper bookInfoMapper;
+    @Autowired
+    LostRecorderMapper lostRecorderMapper;
     /**
      * 查询所有的书籍信息
      * */
@@ -61,6 +62,16 @@ public class BookServieImpl implements BookService {
     @Override
     public List<BookInfo> selectBooksByKeyWords(String keywords) {
         return bookInfoMapper.selectBookInfo(keywords);
+    }
+
+    @Override
+    public void deleteBookById(Integer bookId, Integer lostBookId) {
+        BookInfo bookInfo = new BookInfo();
+        bookInfo.setId(bookId);
+        bookInfoMapper.deleteByPrimaryKey(bookInfo);
+        Example example = new Example(LostRecorder.class);
+        example.createCriteria().andEqualTo("id", lostBookId);
+        lostRecorderMapper.deleteByExample(example);
     }
 
 }

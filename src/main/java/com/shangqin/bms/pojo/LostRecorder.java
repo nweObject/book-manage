@@ -20,6 +20,7 @@ import lombok.Setter;
 public class LostRecorder {
     private Integer id;
     private Integer userId;
+    private Integer bookId;
     private String userName;
     private String bookName;
     private String recorderTime;

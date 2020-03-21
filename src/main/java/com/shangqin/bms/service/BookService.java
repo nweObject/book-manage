@@ -22,4 +22,6 @@ public interface BookService {
     BookInfo getBookById(Integer bookId);
 
     List<BookInfo> selectBooksByKeyWords(String keywords);
+
+    void deleteBookById(Integer bookId, Integer lostBookId);
 }
