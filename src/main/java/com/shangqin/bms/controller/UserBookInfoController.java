@@ -30,6 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/borrower")
 public class UserBookInfoController {
+    private static final String FLAG = "ok";
     @Autowired
     UserBookService userBookService;
 
@@ -67,7 +68,7 @@ public class UserBookInfoController {
         //工具类获取userId
         Integer userId = SessionUtil.getUserId(request);
         String result = userBookService.updateReturnBookTime(userBookId, bookId, userId);
-        if("ok".equals(result)) {
+        if(FLAG.equals(result)) {
 
             return Response.newOkInstance("延期成功");
         }

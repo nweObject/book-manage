@@ -35,7 +35,7 @@ public class UserController {
             String username = users.get(0).getUsername();
             Integer identify = users.get(0).getIdentify();
             Integer age = users.get(0).getAge();
-            Map<String, Object> userMap = new HashMap<>();
+            Map<String, Object> userMap = new HashMap();
             userMap.put("userId", userId);
             userMap.put("username", username);
             userMap.put("identify", identify);

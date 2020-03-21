@@ -106,7 +106,7 @@ public class UserBookServiceImpl implements UserBookService {
             userBookInfo1.setRenewzCount(userBookInfo1.getRenewzCount()+1);
             userBookInfo1.setStatus(1);
             try {
-                userBookInfo1.setReturnTime(plusATime(userBookInfo1.getReturnTime(),13));
+                userBookInfo1.setReturnTime(plusaTime(userBookInfo1.getReturnTime(),13));
             } catch (ParseException e) {
                 return "" + e.getMessage();
             }
@@ -203,7 +203,7 @@ public class UserBookServiceImpl implements UserBookService {
     /**
      * 给某个时间加上一个指定的时间
      * */
-    public String plusATime(String data, int day) throws ParseException {
+    public String plusaTime(String data, int day) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date parse = simpleDateFormat.parse(data);
         Date date = addDate(parse, day);

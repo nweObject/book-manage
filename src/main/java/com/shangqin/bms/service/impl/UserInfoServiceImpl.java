@@ -22,7 +22,9 @@ import java.util.List;
 public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     UserInfoMapper userInfoMapper;
-    //查询所有的用户信息
+    /**
+     * 查询所有的用户信息
+     */
     @Override
     public List<UserInfo> getAllUserInfo() {
         return userInfoMapper.selectAll();

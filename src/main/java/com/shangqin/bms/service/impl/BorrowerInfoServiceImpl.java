@@ -23,7 +23,9 @@ import java.util.List;
 public class BorrowerInfoServiceImpl implements BorrowerInfoService {
     @Autowired
     BorrowerInfoMapper borrowerInfoMapper;
-    //通过bookid查找借阅人信息
+    /**
+     * 通过bookid查找借阅人信息
+     */
     @Override
     public List<BorrowerInfo> selectBorrowerByBookId(Integer bookId) {
         Example example = new Example(BorrowerInfo.class);
