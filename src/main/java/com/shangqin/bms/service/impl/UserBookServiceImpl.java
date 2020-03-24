@@ -5,6 +5,9 @@ import com.shangqin.bms.pojo.*;
 import com.shangqin.bms.service.UserBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
@@ -44,6 +47,7 @@ public class UserBookServiceImpl implements UserBookService {
      * 通过booId查询出需要被借阅的书籍的信息
      * */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addUserBook(Integer bookId, Map userMap) {
         //查询书籍状态，如果被借出则不能再借
         BookInfo thisBookInfo = bookInfoMapper.selectByPrimaryKey(bookId);
@@ -67,60 +71,74 @@ public class UserBookServiceImpl implements UserBookService {
         userBookInfo.setStatus(0);
         userBookInfo.setReturnTime(plusDay(13));
         userBookInfo.setStatus2(0);
-        userBookMapper.insertSelective(userBookInfo);
-        //修改图书馆被借用书籍的状态
-        bookInfo1.setStatus(1);
-        bookInfoMapper.updateByPrimaryKey(bookInfo1);
-        //添加图书借阅人信息
-        BorrowerInfo borrowerInfo = new BorrowerInfo();
-        borrowerInfo.setAge(age);
-        borrowerInfo.setBookId(bookId);
-        borrowerInfo.setUserId(userId);
-        borrowerInfo.setUsername(username);
-        borrowerInfo.setReturnTime(plusDay(13));
-        borrowerInfoMapper.insert(borrowerInfo);
+        try {
+            userBookMapper.insertSelective(userBookInfo);
+            //修改图书馆被借用书籍的状态
+            bookInfo1.setStatus(1);
+            bookInfoMapper.updateByPrimaryKey(bookInfo1);
+            //添加图书借阅人信息
+            BorrowerInfo borrowerInfo = new BorrowerInfo();
+            borrowerInfo.setAge(age);
+            borrowerInfo.setBookId(bookId);
+            borrowerInfo.setUserId(userId);
+            borrowerInfo.setUsername(username);
+            borrowerInfo.setReturnTime(plusDay(13));
+            borrowerInfoMapper.insert(borrowerInfo);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
     }
     /**
      * 归还书籍 ： 删除UserBookInfo信息，修改图书库状态信息
      * */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteUserBookInfoById(Integer userBookId, Integer bookId) {
         UserBookInfo userBookInfo = new UserBookInfo();
         userBookInfo.setId(userBookId);
-        userBookMapper.deleteByPrimaryKey(userBookInfo);
-        //修改图书库该图书状态信息
-        BookInfo bookInfo = new BookInfo();
-        bookInfo.setId(bookId);
-        bookInfo.setStatus(0);
-        bookInfoMapper.updateByPrimaryKeySelective(bookInfo);
+        try {
+            userBookMapper.deleteByPrimaryKey(userBookInfo);
+            //修改图书库该图书状态信息
+            BookInfo bookInfo = new BookInfo();
+            bookInfo.setId(bookId);
+            bookInfo.setStatus(0);
+            bookInfoMapper.updateByPrimaryKeySelective(bookInfo);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
     }
     /**
      * 延期归还书籍，修改userBookInfo的归还时间，修改借阅人的归还时间
      * */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String updateReturnBookTime(Integer userBookId, Integer bookId,Integer userId) {
         UserBookInfo userBookInfo = new UserBookInfo();
         userBookInfo.setId(userBookId);
         UserBookInfo userBookInfo1 = userBookMapper.selectByPrimaryKey(userBookInfo);
-        if(userBookInfo1.getRenewzCount() <=1) {
-            userBookInfo1.setRenewzCount(userBookInfo1.getRenewzCount()+1);
-            userBookInfo1.setStatus(1);
-            try {
-                userBookInfo1.setReturnTime(plusaTime(userBookInfo1.getReturnTime(),13));
-            } catch (ParseException e) {
-                return "" + e.getMessage();
+        try {
+            if(userBookInfo1.getRenewzCount() <=1) {
+                userBookInfo1.setRenewzCount(userBookInfo1.getRenewzCount()+1);
+                userBookInfo1.setStatus(1);
+                try {
+                    userBookInfo1.setReturnTime(plusaTime(userBookInfo1.getReturnTime(),13));
+                } catch (ParseException e) {
+                    return "" + e.getMessage();
+                }
+                userBookMapper.updateByPrimaryKeySelective(userBookInfo1);
+            }else {
+                //如果已经延期了两次则不能再延期
+                return "erro";
             }
-            userBookMapper.updateByPrimaryKeySelective(userBookInfo1);
-        }else {
-            //如果已经延期了两次则不能再延期
-            return "erro";
+            //修改借阅人归还书籍时间
+            BorrowerInfo borrowerInfo = new BorrowerInfo();
+            borrowerInfo.setReturnTime(plusDay(13));
+            Example example = new Example(BorrowerInfo.class);
+            example.createCriteria().andEqualTo("userId",userId).andEqualTo("bookId",bookId);
+            borrowerInfoMapper.updateByExampleSelective(borrowerInfo,example);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
-        //修改借阅人归还书籍时间
-        BorrowerInfo borrowerInfo = new BorrowerInfo();
-        borrowerInfo.setReturnTime(plusDay(13));
-        Example example = new Example(BorrowerInfo.class);
-        example.createCriteria().andEqualTo("userId",userId).andEqualTo("bookId",bookId);
-        borrowerInfoMapper.updateByExampleSelective(borrowerInfo,example);
         return "ok";
     }
 
@@ -134,6 +152,7 @@ public class UserBookServiceImpl implements UserBookService {
     /**
      * 赔偿书籍  添加书籍遗失记录
      * */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String recorderBookInfo(Integer userBookId, Integer bookId, Integer userId) {
         //添加遗失记录
@@ -151,12 +170,16 @@ public class UserBookServiceImpl implements UserBookService {
         lostBookInfo.setUserId(userId);
         lostBookInfo.setBookId(bookId);
         lostBookInfo.setUserName(user1.getUsername());
-        int insert = lostBookInfoMapper.insert(lostBookInfo);
-        //修改UserBookInfo的赔偿状态
-        UserBookInfo userBookInfo = new UserBookInfo();
-        userBookInfo.setId(userBookId);
-        userBookInfo.setStatus2(1);
-        userBookMapper.updateByPrimaryKeySelective(userBookInfo);
+        try {
+            int insert = lostBookInfoMapper.insert(lostBookInfo);
+            //修改UserBookInfo的赔偿状态
+            UserBookInfo userBookInfo = new UserBookInfo();
+            userBookInfo.setId(userBookId);
+            userBookInfo.setStatus2(1);
+            userBookMapper.updateByPrimaryKeySelective(userBookInfo);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return "ok";
     }
 

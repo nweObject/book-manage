@@ -1,10 +1,12 @@
 package com.shangqin.bms.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.shangqin.bms.pojo.BookInfo;
 import com.shangqin.bms.pojo.BorrowerInfo;
 import com.shangqin.bms.service.BookService;
 import com.shangqin.bms.service.BorrowerInfoService;
 import com.shangqin.bms.utils.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +39,10 @@ public class BookController {
      */
     @PostMapping("add")
     public Response addBook(@RequestBody BookInfo bookInfo) {
+        String bookInfoString = JSON.toJSONString(bookInfo);
+        if(bookInfoString.length() == 2) {
+            return Response.newErrorInstance("不能为空");
+        }
         try {
             bookService.addNewBook(bookInfo);
         } catch (Exception e) {
